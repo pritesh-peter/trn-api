@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -38,9 +40,22 @@ public class UserController {
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable("userId") Integer uId)
     {
      this.userService.deleteUser(uId);
-     return new ResponseEntity<ApiResponse>(new ApiResponse("User Deleted Successfully",true),HttpStatus.OK)
+     return new ResponseEntity<ApiResponse>(new ApiResponse("User Deleted Successfully",true),HttpStatus.OK);
     }
 
-    //GET - get user
+    //GET - get all users
 
+    @GetMapping("/")
+    public ResponseEntity<List<UserDto>> getAllUsers()
+    {
+        return ResponseEntity.ok(this.userService.getAllUsers());
+    }
+
+    //GET - get user by Id
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Integer userId)
+    {
+        return ResponseEntity.ok(this.userService.getUserById(userId));
+    }
 }
