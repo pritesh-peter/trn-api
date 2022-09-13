@@ -3,6 +3,7 @@ package com.trn.core.api.controllers;
 import com.trn.core.api.entities.Category;
 import com.trn.core.api.payloads.ApiResponse;
 import com.trn.core.api.payloads.CategoryDto;
+import com.trn.core.api.payloads.UserDto;
 import com.trn.core.api.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -33,7 +35,7 @@ public class CategoryController {
 
     }
     //delete
-    @DeleteMapping("/{categoryId}")
+    @DeleteMapping("/{catId}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Integer catId){
         this.categoryService.deleteCategory(catId);
         return new ResponseEntity<ApiResponse>(new ApiResponse("category deleted successfully",true),HttpStatus.OK);
@@ -49,4 +51,10 @@ public class CategoryController {
     }
 
     //get all
+    @GetMapping("/")
+    public ResponseEntity<List<CategoryDto>> getAllCategories()
+    {
+        return ResponseEntity.ok(this.categoryService.getCategories());
+    }
+
 }
