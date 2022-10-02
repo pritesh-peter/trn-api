@@ -4,6 +4,7 @@ import com.trn.core.api.entities.Category;
 import com.trn.core.api.entities.Post;
 import com.trn.core.api.entities.User;
 import com.trn.core.api.exceptions.ResourceNotFoundException;
+import com.trn.core.api.payloads.CategoryDto;
 import com.trn.core.api.payloads.PostDto;
 import com.trn.core.api.repositories.CategoryRepo;
 import com.trn.core.api.repositories.PostRepo;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -71,13 +73,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostByCategory(Integer categoryId) {
-        return null;
+    public List<PostDto> getPostByCategory(Integer categoryId) {
+
+        Category cat = this.categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","CategoryId",categoryId));
+
+        List<Post> posts = this.postRepo.findByCategory(cat);
+        List<PostDto> postDtos = posts.stream().map((post)-> this.modelMapper.map(posts,PostDto.class)).collect(Collectors.toList());
+        return postDtos;
     }
 
     @Override
-    public List<Post> getPostByUser(Integer userId) {
-        return null;
+    public List<PostDto> getPostByUser(Integer userId) {
+
+        User user = this.userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserId",userId));
+
+        List<Post> posts = this.postRepo.findByUser(user);
+        List<PostDto> postDtos = posts.stream().map((post)-> this.modelMapper.map(posts,PostDto.class)).collect(Collectors.toList());
+        return postDtos;
     }
 
     @Override
