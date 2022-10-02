@@ -1,10 +1,17 @@
 package com.trn.core.api.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name="post")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Post {
 
     @Id
@@ -20,5 +27,12 @@ public class Post {
     private  String imageName;
 
     private Date addedDate;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    private User user;
 
 }
