@@ -1,6 +1,7 @@
 package com.trn.core.api.controllers;
 
 
+import com.trn.core.api.payloads.ApiResponse;
 import com.trn.core.api.payloads.PostDto;
 import com.trn.core.api.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,12 @@ public class PostController {
 
     //get all posts
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getAllPost()
+    public ResponseEntity<List<PostDto>> getAllPost(
+            @RequestParam(value = "pageNumber",defaultValue = "1",required = false)Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "5",required = false)Integer pageSize
+    )
     {
-        List<PostDto> postDtos = this.postService.getAllPost();
+        List<PostDto> postDtos = this.postService.getAllPost(pageNumber,pageSize);
         return new ResponseEntity<>(postDtos,HttpStatus.OK);
     }
 
@@ -63,5 +67,22 @@ public class PostController {
         PostDto postDto = this.postService.getPostById(postId);
         return new ResponseEntity<>(postDto,HttpStatus.OK);
     }
+
+    //delete post by id
+    @DeleteMapping("/posts/{postId}")
+    public ApiResponse deletePost(@PathVariable Integer postId)
+    {
+        this.postService.deletePost(postId);
+        return new ApiResponse("Post successfully deleted",true);
+    }
+
+    //update post by id
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable Integer postId)
+    {
+        PostDto updatePost = this.postService.updatePost(postDto,postId);
+        return new ResponseEntity<PostDto>(updatePost,HttpStatus.OK);
+    }
+
 
 }

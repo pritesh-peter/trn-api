@@ -13,7 +13,7 @@ public interface PostService {
 
     //update
 
-    Post updatePost(PostDto postDto, Integer postId);
+    PostDto updatePost(PostDto postDto, Integer postId);
 
     //delete
 
@@ -25,7 +25,7 @@ public interface PostService {
 
     //get all posts
 
-    List<PostDto> getAllPost();
+    List<PostDto> getAllPost(Integer pageNumber, Integer pageSize );
 
     //get all post by category
 
