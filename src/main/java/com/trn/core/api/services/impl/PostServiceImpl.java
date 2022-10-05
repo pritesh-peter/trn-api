@@ -6,6 +6,7 @@ import com.trn.core.api.entities.User;
 import com.trn.core.api.exceptions.ResourceNotFoundException;
 import com.trn.core.api.payloads.CategoryDto;
 import com.trn.core.api.payloads.PostDto;
+import com.trn.core.api.payloads.PostResponse;
 import com.trn.core.api.repositories.CategoryRepo;
 import com.trn.core.api.repositories.PostRepo;
 import com.trn.core.api.repositories.UserRepo;
@@ -84,7 +85,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPost(Integer pageNumber, Integer pageSize ) {
+    public PostResponse getAllPost(Integer pageNumber, Integer pageSize ) {
 
         Pageable p = PageRequest.of(pageNumber,pageSize);
 
@@ -93,7 +94,15 @@ public class PostServiceImpl implements PostService {
         List<Post> allPosts = pagePost.getContent();
         List<PostDto> postDtos = allPosts.stream().map((post)->this.modelMapper.map(post,PostDto.class)).collect(Collectors.toList());
 
-        return postDtos;
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(postDtos);
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setTotalElements(pagePost.getTotalElements());
+        postResponse.setLastPage(pagePost.isLast());
+
+        return postResponse;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.trn.core.api.services;
 
 import com.trn.core.api.entities.Post;
 import com.trn.core.api.payloads.PostDto;
+import com.trn.core.api.payloads.PostResponse;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface PostService {
 
     //get all posts
 
-    List<PostDto> getAllPost(Integer pageNumber, Integer pageSize );
+    PostResponse getAllPost(Integer pageNumber, Integer pageSize );
 
     //get all post by category
 
