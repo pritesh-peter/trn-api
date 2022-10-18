@@ -1,4 +1,4 @@
-package com.trn.core.api.security;
+package com.trn.core.api.payloads;
 
 import lombok.Data;
 
