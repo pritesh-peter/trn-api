@@ -3,7 +3,9 @@ package com.trn.core.api.controllers;
 import com.trn.core.api.exceptions.ApiException;
 import com.trn.core.api.payloads.JwtAuthRequest;
 import com.trn.core.api.payloads.JwtAuthResponse;
+import com.trn.core.api.payloads.UserDto;
 import com.trn.core.api.security.JwtTokenHelper;
+import com.trn.core.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,9 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserService userService;
+
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> createToken(
@@ -52,5 +57,15 @@ public class AuthController {
         }catch(BadCredentialsException e){
             throw new ApiException("Invalid username or password");
         }
+    }
+
+    //register new user
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerNewUser(@RequestBody UserDto userDto){
+
+        UserDto registeredUser = this.userService.registerNewUser(userDto);
+
+        return new ResponseEntity<>(registeredUser,HttpStatus.CREATED);
     }
 }
