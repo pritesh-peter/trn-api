@@ -1,10 +1,12 @@
 package com.trn.core.api.payloads;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.trn.core.api.entities.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -35,5 +37,8 @@ public class UserDto {
 
     private Set<RoleDto> roles = new HashSet<>();
 
-
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
 }

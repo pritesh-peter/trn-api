@@ -11,6 +11,7 @@ import com.trn.core.api.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.trn.core.api.exceptions.*;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +34,9 @@ public class UserServiceImpl implements UserService {
     private RoleRepo roleRepo;
 
     @Override
-    public UserDto registerNewUser(UserDto userDto) {
+    public UserDto registerNewUser(UserDto userDto){
         User user = this.modelMapper.map(userDto,User.class);
-
+        User newUser = new User();
         //encoded the password
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
@@ -43,8 +44,14 @@ public class UserServiceImpl implements UserService {
         Role role = this.roleRepo.findById(AppConstants.NORMAL_USER).get();
 
         user.getRoles().add(role);
+try {
+  newUser = this.userRepo.save(user);
+}  catch( Exception e) {
+    System.out.println(e);
+  throw new ApiException(e.getMessage());
+}
 
-        User newUser = this.userRepo.save(user);
+
 
         return this.modelMapper.map(newUser,UserDto.class);
     }

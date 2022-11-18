@@ -1,11 +1,13 @@
 package com.trn.core.api.controllers;
 
+import com.trn.core.api.entities.User;
 import com.trn.core.api.exceptions.ApiException;
 import com.trn.core.api.payloads.JwtAuthRequest;
 import com.trn.core.api.payloads.JwtAuthResponse;
 import com.trn.core.api.payloads.UserDto;
 import com.trn.core.api.security.JwtTokenHelper;
 import com.trn.core.api.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth/")
 public class AuthController {
 
+    @Autowired
+    private ModelMapper modelMapper;
     @Autowired
     private JwtTokenHelper jwtTokenHelper;
 
@@ -47,6 +51,7 @@ public class AuthController {
 
     JwtAuthResponse response = new JwtAuthResponse();
     response.setToken(token);
+    response.setUser(this.modelMapper.map((User)userDetails,UserDto.class));
     return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -62,7 +67,7 @@ public class AuthController {
     //register new user
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerNewUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> registerNewUser(@RequestBody UserDto userDto) throws Exception{
 
         UserDto registeredUser = this.userService.registerNewUser(userDto);
 
