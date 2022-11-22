@@ -1,6 +1,7 @@
 package com.trn.core.api.payloads;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.trn.core.api.entities.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,5 +41,10 @@ public class UserDto {
     @JsonIgnore
     public String getPassword() {
         return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password){
+        this.password=password;
     }
 }
