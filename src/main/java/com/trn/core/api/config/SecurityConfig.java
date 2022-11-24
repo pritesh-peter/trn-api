@@ -30,7 +30,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String[] PUBLIC_URLS ={
-            "/api/v1/auth/**",
+            "/api/v1/**",
             "/v3/api-docs",
             "/v2/api-docs",
             "/swagger-resources/**",
@@ -53,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf()
         .disable()
         .authorizeHttpRequests()
-        .antMatchers(PUBLIC_URLS).permitAll()
         .antMatchers(HttpMethod.GET).permitAll()
+        .antMatchers(PUBLIC_URLS).permitAll()
         .anyRequest()
         .authenticated()
         .and()
